@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 class EpsilonGreedyPolicy:
     """Initialises a greedy policy, which always takes the action
     that results in the highest value according to the value_function
@@ -8,7 +10,13 @@ class EpsilonGreedyPolicy:
 
     def select_action(self, state, actions, model, epsilon):
         bestaction = model.predict(state)
-        if
+        pass
 
     def epsilon_decay(self, x):
         pass  # TODO: Wiskunde formule opzoeken, misschien 1/x?
+
+@dataclass
+class SARS:
+    """Transition class with SARSd object."""
+    def __init__(self, state, action, reward, next_state, done):
+        self.sars = (state, action, reward, next_state, done)
