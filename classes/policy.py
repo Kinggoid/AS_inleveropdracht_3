@@ -6,8 +6,9 @@ class EpsilonGreedyPolicy:
     def __init__(self):
         pass
 
-    def select_action(self, state, actions, env, epsilon):
-        pass  # TODO: Actie selecteren, approximator gebruiken?
+    def select_action(self, state, actions, model, epsilon):
+        bestaction = model.predict(state)
+        if
 
     def epsilon_decay(self, x):
         pass  # TODO: Wiskunde formule opzoeken, misschien 1/x?
