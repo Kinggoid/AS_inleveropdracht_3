@@ -7,6 +7,7 @@ def target_neural_network(state):
 
 
 def train(memory):
+    """Train the neural networks."""
     gamma = 0.9
     batch = memory.sample()
     batch_next_states = [sars.next_state for sars in batch]
