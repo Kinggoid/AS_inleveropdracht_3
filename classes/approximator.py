@@ -1,6 +1,6 @@
 import tensorflow as tf
 import keras.backend as k
-import numpy
+import numpy as np
 
 class BaseNetwork:
     """Base class which defines the network"""
@@ -12,5 +12,12 @@ class BaseNetwork:
         self.network = tf.keras.models.Model(inputs=inputlayer, outputs=outputlayer)
         self.network.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss="mse")
 
+    def set_weights_manual(self):
 
-print(BaseNetwork().network.layers[0].get_weights())
+base = BaseNetwork()
+x = np.random.random((100,8))
+y = np.random.random((100,4))
+base.network.fit(x,y)
+print(base.network.layers[1].get_weights())
+# Layer 0 is input, geen weights.
+# Query op layers 1 t/m 3.
