@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 class EpsilonGreedyPolicy:
     """Initialises a greedy policy, which always takes the action
     that results in the highest value according to the value_function
