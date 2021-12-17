@@ -13,6 +13,12 @@ class BaseNetwork:
         self.network.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss="mse")
 
     def set_weights_manual(self):
+        pass
+
+    def get_weights(self):
+        weights = []
+        for layer in range(1,4):
+            weights.append(self.network.layers[layer].get_weights())
 
 base = BaseNetwork()
 x = np.random.random((100,8))
