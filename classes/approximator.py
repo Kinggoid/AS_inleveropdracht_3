@@ -19,6 +19,7 @@ class BaseNetwork:
         weights = []
         for layer in range(1,4):
             weights.append(self.network.layers[layer].get_weights())
+        return weights
 
 base = BaseNetwork()
 x = np.random.random((100,8))
