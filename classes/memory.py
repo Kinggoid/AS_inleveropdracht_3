@@ -15,5 +15,5 @@ class Memory:
 
     def append_to_memory(self, new_SARS):
         self.remove_latests_memory()
-        self.transities.append(new_SARS)
+        self.transitions.append(new_SARS)
 
