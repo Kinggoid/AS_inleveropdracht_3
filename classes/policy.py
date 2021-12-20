@@ -26,7 +26,7 @@ class EpsilonGreedyPolicy:
         pass  # TODO: Wiskunde formule opzoeken, misschien 1/x?
 
 @dataclass
-class SARS:
+class SARSd:
     """Transition class with SARSd object."""
     def __init__(self, state, action, reward, next_state, done):
         self.sars = (state, action, reward, next_state, done)
