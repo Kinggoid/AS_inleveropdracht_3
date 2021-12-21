@@ -27,14 +27,17 @@ def train(targetmodel, policymodel, memory, batchsize, gamma, actions):
 
     batch = memory.sample(batchsize)
     batch_next_states = [sarsd.get_next_state() for sarsd in batch]
-    rewards = [sarsd.get_reward() for sarsd in batch]
+    batch_rewards = [sarsd.get_reward() for sarsd in batch]
     for i in range(len(batch)):
-        qvaluepolicy = policymodel.get_output(batch_next_states[i])
+        next_state = batch_next_states[i]
+        reward = batch_rewards[i]
+        qvaluepolicy = policymodel.get_output(next_state)
         bestaction = np.argmax(qvaluepolicy)
-        qvaluetarget = policymodel.get_output(batch_next_states[i])
+        qvaluetarget = policymodel.get_output(next_state)
         bestactionqvalue = qvaluetarget[bestaction]
-        # targets = get_values_neural_network(model, batch_next_states[i])  #
         target = batch[i].get_reward() + gamma * bestactionqvalue
-
-
-
+        # tensortarget = qvalue  # TODO: Backpropagation
+        # tensortargetlist =
+        # Voer backpropagation uit
+        # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], backprop? = [30,50,0.5?,10]
+        policymodel.train_network()
