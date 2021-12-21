@@ -3,6 +3,7 @@ import numpy as np
 import tensorflow as tensor
 
 
+
 def get_state_values(environment):
     # x = float
     # y = float
@@ -36,8 +37,8 @@ def train(targetmodel, policymodel, memory, batchsize, gamma, actions):
         qvaluetarget = policymodel.get_output(next_state)
         bestactionqvalue = qvaluetarget[bestaction]
         target = batch[i].get_reward() + gamma * bestactionqvalue
-        # tensortarget = qvalue  # TODO: Backpropagation
-        # tensortargetlist =
+        tensortarget = qvaluetarget.copy()
+        tensortarget[bestaction] = target
         # Voer backpropagation uit
-        # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], backprop? = [30,50,0.5?,10]
-        policymodel.train_network()
+        # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], target = [30,50,0.5,10]
+        policymodel.train_network(next_state, tensortarget)
