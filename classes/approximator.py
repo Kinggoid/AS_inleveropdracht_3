@@ -31,26 +31,37 @@ class BaseNetwork:
 
     def train_network(self, x, y):
         """Trains the network on a given set of X-values (state) and Y-values (Yqt)"""
-        if isinstance(x[0],list):  # X-set prep
-            arrayinputs = np.array(x).reshape(len(x),8)
-        else:
-            arrayinputs = np.array(x).reshape(1,8)
-
-        if isinstance(y[0],list):  # Y-set prep
-            arrayinputs = np.array(y).reshape(len(y),8)
-        else:
-            arrayinputs = np.array(y).reshape(1,8)
+        # if isinstance(x[0],list) or isinstance(x[0], np.ndarray):  # X-set prep
+        #     arrayinputs = np.array(x).reshape(len(x),8)
+        # else:
+        #     arrayinputs = np.array(x).reshape(1,8)
+        #
+        # if isinstance(y[0],list) or isinstance(y[0], np.ndarray):  # Y-set prep
+        #     arrayinputs = np.array(y).reshape(len(y),8)
+        # else:
+        #     arrayinputs = np.array(y).reshape(1,8)
 
         self.network.fit(x, y)
 
-    def set_weights(self, wandb: list, layer: int):
+    def set_weights(self, weights: list, biases: list, layer: int):
         """Adjusts the weights of the given layer."""
-        temp = np.array(wandb)
-        if temp.shape == self.network.layer[layer].shape:
+        tempw = np.array(weights)
+        tempb = np.array(biases)
+        if tempw.shape == self.network.layer[layer].weights[0].shape:
             self.network.layer[layer].set_weights(wandb)  # TODO: Test of dit werkt in context! (Komt later)
 
-    def get_weights(self):
-        weights = []
-        for layer in range(1,4):
-            weights.append(np.array(self.network.layers[layer].get_weights()))
-        return weights
+    def get_weights(self, layer):
+        """Gets the inputs and the bias of a given layer."""
+
+        # weights = np.array(self.network.layers[layer].weights)[0]
+        # biases = np.array(self.network.layers[layer].weights)[-1]
+        return weights, biases
+
+test = BaseNetwork()
+inp = np.random.random((100,8))
+out = np.random.random((100,4))
+test.train_network(inp,out)
+print("Weights")
+print(test.get_weights(1))
+print("Biases")
+print(test.get_weights(1))
