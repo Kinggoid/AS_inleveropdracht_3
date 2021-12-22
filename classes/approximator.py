@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 
+
 class BaseNetwork:
     """Base class which defines the network"""
     def __init__(self):

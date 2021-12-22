@@ -5,22 +5,23 @@ from classes.agent import Agent
 from classes.policy import EpsilonGreedyPolicy, SARSd
 from classes.neural_network import *
 from classes.approximator import BaseNetwork
+from classes.memory import Memory
 
 env = gym.make('LunarLander-v2')
-for i_episode in range(20):
+memory = Memory(1000)
+for i_episode in range(5000):
     observation = env.reset()
     state_reward, done = 0, 0
-    for t in range(100):
+    for t in range(1000):
         env.render()
 
         last_observation = observation
-        last_reward = state_reward
         last_done = done
 
         action = env.action_space.sample()
         observation, reward, done, info = env.step(action)
 
-        sarsd = SARSd(last_observation, action, last_reward, observation, last_done)
+        sarsd = SARSd(last_observation, action, reward, observation, last_done)
 
         if done:
             print("Episode finished after {} timesteps".format(t+1))

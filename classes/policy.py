@@ -37,19 +37,10 @@ class EpsilonGreedyPolicy:
 class SARSd:
     """Transition class with SARSd object."""
     def __init__(self, state, action, reward, next_state, done):
-        self.sars = (state, action, reward, next_state, done)
+        self.state = state
+        self.action = action
+        self.reward = reward
+        self.next_state = next_state
+        self.done = done
+        # self.sars = (state, action, reward, next_state, done)
 
-    def get_state(self):
-        return self.sars[0]
-
-    def get_action(self):
-        return self.sars[1]
-
-    def get_reward(self):
-        return self.sars[2]
-
-    def get_next_state(self):
-        return self.sars[3]
-
-    def get_done(self):
-        return self.sars[4]
