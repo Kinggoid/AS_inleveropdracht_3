@@ -1,6 +1,7 @@
 from copy import deepcopy
 import numpy as np
 import tensorflow as tensor
+from functions.helper import prob
 
 
 def train(targetmodel, policymodel, memory, batchsize, gamma):
@@ -27,6 +28,28 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
         policymodel.train_network(next_state.state, tensortarget)
     return policymodel
 
+
 def copy_model(targetmodel, policymodel, tau):
-    weightstargetmodel = targetmodel.get_weights()
-    weightspolicymodel = policymodel.get_weights()
+    """We will partly copy and past the weights of the policymodel to the targetmodel."""
+
+    for layer in range(len(targetmodel.layers)):
+        policy_weights = policymodel.get_weights(layer)
+        target_weights = targetmodel.get_weights(layer)
+        policy_bias = policymodel.get_bias(layer)
+        target_bias = targetmodel.get_bias(layer)
+
+        layer_weights = []
+        for neuron in range(len(targetmodel.layers[layer].weights)):
+            weights = []
+            for weight in range(len(policy_weights[neuron])):
+                if prob(tau):
+                    weights.append(target_weights[neuron][weight])
+                else:
+                    weights.append(policy_weights[neuron][weight])
+            layer_weights.append(weights)
+
+        if prob(tau):
+            target_bias = policy_bias
+
+        targetmodel.set_weights_and_bias(layer_weights, target_bias, layer)
+    return targetmodel
