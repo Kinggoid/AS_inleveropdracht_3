@@ -15,53 +15,74 @@ class BaseNetwork:
     def get_output(self, inputs):
         """Gives the output of the approximator neural network based
         on a single or a set of inputs."""
-        if isinstance(inputs[0],list):
+        if isinstance(inputs[0], list) or isinstance(inputs[0], np.ndarray):
             arrayinputs = np.array(inputs).reshape(len(inputs),8)  # https://stackoverflow.com/questions/70362733/input-to-the-neural-network-using-an-array
         else:
             arrayinputs = np.array(inputs).reshape(1,8)
         return self.network.predict(arrayinputs)
 
-    def save_network(self):
-        """Returns the current model"""
-        return self.network
+    def save_network(self, filepath):
+        """Saves the model's assets in a given folder. Make sure the given folder is empty!"""
+        return self.network.save(filepath)
 
-    def load_network(self, loadnetwork):
-        """Loads a given model; overwrites current with new model!"""
-        self.network = loadnetwork
+    def load_network(self, filepath):
+        """Loads a given model from an asset folder populated by save_network(); overwrites current with new model!
+        No compiling necessary."""
+        self.network = tf.keras.models.load_model(filepath)  # Geen compile nodig: https://www.tensorflow.org/tutorials/keras/save_and_load#savedmodel_format
 
     def train_network(self, x, y):
         """Trains the network on a given set of X-values (state) and Y-values (Yqt)"""
-        # if isinstance(x[0],list) or isinstance(x[0], np.ndarray):  # X-set prep
-        #     arrayinputs = np.array(x).reshape(len(x),8)
-        # else:
-        #     arrayinputs = np.array(x).reshape(1,8)
-        #
-        # if isinstance(y[0],list) or isinstance(y[0], np.ndarray):  # Y-set prep
-        #     arrayinputs = np.array(y).reshape(len(y),8)
-        # else:
-        #     arrayinputs = np.array(y).reshape(1,8)
-
         self.network.fit(x, y)
 
-    def set_weights(self, weights: list, biases: list, layer: int):
-        """Adjusts the weights of the given layer."""
-        tempw = np.array(weights)
-        tempb = np.array(biases)
-        if tempw.shape == self.network.layer[layer].weights[0].shape:
-            self.network.layer[layer].set_weights(wandb)  # TODO: Test of dit werkt in context! (Komt later)
+    def set_weights(self, weights: np.ndarray, bias: np.ndarray, layer: int):
+        if weights.shape == self.network.layers[layer].get_weights()[0].shape and bias.shape == self.network.layers[layer].get_weights()[1].shape:
+            wandb = [weights, bias]
+            self.network.layers[layer].set_weights(wandb)
+
+
+    # def set_weights(self, weights: np.ndarray, layer: int):
+    #     """Adjusts the weights of the given layer."""
+    #     # print(self.network.layers[layer].weights[:-1])
+    #     if weights.shape == np.array(self.network.layers[layer].weights[:-1])[0].shape:
+    #         for neuron in range(weights.shape[0]):
+    #             print(neuron)
+    #             print(self.network.layers[layer].weights[neuron])
+    #             print(weights[neuron])
+    #             self.network.layers[layer].weights[0][neuron] = weights[neuron]
+    #     else:
+    #         raise NotImplementedError
+    #
+    # def set_bias(self, biases: np.ndarray, layer: int):
+    #     """Adjusts the weights of the given layer."""
+    #     if biases.shape == np.array(self.network.layers[layer].weights[-1]):
+    #         self.network.layers[layer].weights[-1] = biases
+    #     else:
+    #         raise NotImplementedError
 
     def get_weights(self, layer):
         """Gets the inputs and the bias of a given layer."""
+        if layer <= 0:
+            raise Exception("Input layer does not have weights.")
+        elif layer < 0 or layer > 3:
+            raise Exception("Invalid layer passed as arg (must be 1, 2 or 3)")
+        unfiltered = self.network.get_weights()
+        index = (layer-1) * 2
+        return unfiltered[index]
 
-        # weights = np.array(self.network.layers[layer].weights)[0]
-        # biases = np.array(self.network.layers[layer].weights)[-1]
-        return weights, biases
+    def get_bias(self, layer):
+        if layer == 0:
+            raise Exception("Input layer does not have biases.")
+        elif layer < 0 or layer > 3:
+            raise Exception("Invalid layer passed as arg (must be 1, 2 or 3)")
+        unfiltered = self.network.get_weights()
+        index = (layer-1) * 2 + 1
+        return unfiltered[index]
 
-test = BaseNetwork()
-inp = np.random.random((100,8))
-out = np.random.random((100,4))
-test.train_network(inp,out)
-print("Weights")
-print(test.get_weights(1))
-print("Biases")
-print(test.get_weights(1))
+# test = BaseNetwork()
+# inp = np.random.random((100,8))
+# out = np.random.random((100,4))
+# test.train_network(inp,out)
+# print("Weights")
+# print(test.get_weights(1))
+# print("Biases")
+# print(test.get_bias(1))
