@@ -20,7 +20,7 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
             bestactionqvalue = next_state_targets[bestaction]
             target = state.reward + gamma * bestactionqvalue
 
-        tensortarget = policymodel.get_output(state)  # Tensorflow: Vervang de index beste actie met de target van de qvalues van target nn(?)
+        tensortarget = policymodel.get_output(state.state)  # Tensorflow: Vervang de index beste actie met de target van de qvalues van target nn(?)
         tensortarget[state.action] = target
         # Voer backpropagation uit
         # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], target = [30,50,0.5,10]

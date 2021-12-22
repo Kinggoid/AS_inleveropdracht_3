@@ -4,7 +4,7 @@ import gym
 from classes.agent import Agent
 from classes.policy import EpsilonGreedyPolicy, SARSd
 from classes.neural_network import *
-from classes.approximator import BaseNetwork
+from classes.approximator import Approximator
 from classes.memory import Memory
 
 env = gym.make('LunarLander-v2')

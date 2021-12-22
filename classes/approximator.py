@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 
 
-class BaseNetwork:
+class Approximator:
     """Base class which defines the network"""
     def __init__(self):
         # Base network
@@ -14,7 +14,7 @@ class BaseNetwork:
         self.network.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss="mse")
 
     def get_output(self, inputs):
-        """Gives the output of the approximator neural network based
+        """Gives the output of the Approximator neural network based
         on a single or a set of inputs."""
         if isinstance(inputs[0], list) or isinstance(inputs[0], np.ndarray):
             arrayinputs = np.array(inputs).reshape(len(inputs),8)  # https://stackoverflow.com/questions/70362733/input-to-the-neural-network-using-an-array
@@ -35,30 +35,16 @@ class BaseNetwork:
         """Trains the network on a given set of X-values (state) and Y-values (Yqt)"""
         self.network.fit(x, y)
 
-    def set_weights(self, weights: np.ndarray, bias: np.ndarray, layer: int):
+    def set_weights_and_bias(self, weights: np.ndarray, bias: np.ndarray, layer: int):
         if weights.shape == self.network.layers[layer].get_weights()[0].shape and bias.shape == self.network.layers[layer].get_weights()[1].shape:
             wandb = [weights, bias]
             self.network.layers[layer].set_weights(wandb)
 
-
-    # def set_weights(self, weights: np.ndarray, layer: int):
-    #     """Adjusts the weights of the given layer."""
-    #     # print(self.network.layers[layer].weights[:-1])
-    #     if weights.shape == np.array(self.network.layers[layer].weights[:-1])[0].shape:
-    #         for neuron in range(weights.shape[0]):
-    #             print(neuron)
-    #             print(self.network.layers[layer].weights[neuron])
-    #             print(weights[neuron])
-    #             self.network.layers[layer].weights[0][neuron] = weights[neuron]
-    #     else:
-    #         raise NotImplementedError
-    #
-    # def set_bias(self, biases: np.ndarray, layer: int):
-    #     """Adjusts the weights of the given layer."""
-    #     if biases.shape == np.array(self.network.layers[layer].weights[-1]):
-    #         self.network.layers[layer].weights[-1] = biases
-    #     else:
-    #         raise NotImplementedError
+    def set_weights(self, weights: np.ndarray, layer: int):
+        if weights.shape == self.network.layers[layer].get_weights()[0].shape:
+            bias = self.get_bias(layer)
+            wandb = [weights, bias]
+            self.network.layers[layer].set_weights(wandb)
 
     def get_weights(self, layer):
         """Gets the inputs and the bias of a given layer."""
@@ -78,12 +64,3 @@ class BaseNetwork:
         unfiltered = self.network.get_weights()
         index = (layer-1) * 2 + 1
         return unfiltered[index]
-
-# test = BaseNetwork()
-# inp = np.random.random((100,8))
-# out = np.random.random((100,4))
-# test.train_network(inp,out)
-# print("Weights")
-# print(test.get_weights(1))
-# print("Biases")
-# print(test.get_bias(1))
