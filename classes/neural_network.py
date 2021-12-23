@@ -55,7 +55,7 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
 
     for i in range(len(batch)):
         state = batch[i]
-        if batch_done:
+        if batch_done[i]:
             target = state.reward
         else:
             next_state_best_action = np.argmax(next_state_policies[i])

@@ -26,7 +26,7 @@ def main():
     gamma = 0.9
     policy_network = Approximator(learning_rate)
     target_network = Approximator(learning_rate)
-    copy_episodes = 4
+    copy_episodes = 10
     save_episodes = 100
     tau = 0.001
     rewards = [[], []]
@@ -38,7 +38,7 @@ def main():
     for i_episode in range(5):
         observation = env.reset()
         state_reward, done = 0, 0
-        episode_reward = 0
+        episode_reward = []
         timeend = datetime.now()
         print("Iter took {}".format(timeend - timestart))
         timestart = datetime.now()
@@ -50,22 +50,22 @@ def main():
             action = policy_object.select_action(last_observation, env.action_space, policy_network, i_episode)
             observation, reward, done, info = env.step(action)
 
-            episode_reward += reward
+            episode_reward.append(reward)
 
             sarsd = SARSd(last_observation, action, reward, observation, last_done)
             Memory.append_to_memory(memory, sarsd)
 
             if done:
                 end = datetime.now()
-                episode_reward_total += episode_reward
+                episode_reward.append(reward)
+                average_reward = sum(episode_reward) / len(episode_reward)
                 print("Episode: {}".format(i_episode))
                 print("Episode finished after {} timesteps".format(t+1))
-                print("Total episode reward: {}".format(episode_reward))
-                print("Average reward over all episodes: {}".format((episode_reward_total/(i_episode+1))))
+                print("Average episode reward is " + str(average_reward))
                 break
 
         rewards[0].append(i_episode)
-        rewards[1].append(episode_reward)
+        rewards[1].append(average_reward)
 
         train(target_network, policy_network, memory, batch_size, gamma)
         if i_episode % copy_episodes == 0 and i_episode > 0:
