@@ -7,7 +7,7 @@ class WeightBiasManipulation(unittest.TestCase):
 
     def setUp(self):
         """Sets up the environment for testing every time."""
-        self.test = Approximator()
+        self.test = Approximator(0.0005)
         x = np.random.random((100, 8))
         y = np.random.random((100, 4))
         self.test.train_network(x, y)

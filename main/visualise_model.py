@@ -20,10 +20,13 @@ i_episode = 1100
 
 while True:  # Termineer programma om loop te breken
     observation = env.reset()
+    rewards = []
     for t in range(500):
         env.render()
         action = policy_object.select_action(observation, env.action_space, policy_model, i_episode)
         observation, reward, done, info = env.step(action)
+        rewards.append(reward)
         if done:
             print("Episode finished after {} timesteps".format(t + 1))
+            print("End reward: {}".format(np.average(rewards)))
             break

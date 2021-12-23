@@ -14,7 +14,9 @@ class EpsilonGreedyPolicy:
     def __init__(self):
         pass
 
+    # def select_action(self, state, actions, model, episode):
     def select_action(self, state, actions, model, episode):
+        # if prob(epsilon):
         if prob(self.epsilon_decay(episode)):
             policyaction = actions.sample()
         else:

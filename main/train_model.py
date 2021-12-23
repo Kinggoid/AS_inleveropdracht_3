@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 
 
 def visualize_learning(rewards):
-    print(rewards[1])
     ax = sns.lineplot(rewards[0], rewards[1])
 
     ax.set(xlabel='Timesteps', ylabel='Rewards')
@@ -23,7 +22,7 @@ def main():
     env = gym.make('LunarLander-v2')
     memory = Memory(10000)
     batch_size = 64
-    episodes = 100
+    episodes = 5000
     learning_rate = 0.0005
     policy_object = EpsilonGreedyPolicy()
     gamma = 0.9
@@ -58,10 +57,10 @@ def main():
             if done:
                 episode_reward.append(reward)
                 average_reward = sum(episode_reward) / len(episode_reward)
-                # print("Episode: {}".format(i_episode))
-                # print("Episode finished after {} timesteps".format(t+1))
-                # print("Episode reward is " + str(sum(episode_reward)))
-                # print("Average episode reward is " + str(average_reward))
+                print("Episode: {}".format(i_episode))
+                print("Episode finished after {} timesteps".format(t+1))
+                print("Episode reward is " + str(sum(episode_reward)))
+                print("Average episode reward is " + str(average_reward))
                 break
 
         rewards[0].append(i_episode)
