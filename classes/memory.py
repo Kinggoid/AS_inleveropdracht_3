@@ -5,12 +5,15 @@ from dataclasses import dataclass
 
 class Memory:
     def __init__(self, size):
+        """Create a deque."""
         self.transitions = deque([], size)
 
     def sample(self, batch_size):
+        """Take a sample of the deque."""
         return random.sample(self.transitions, batch_size)
 
     def append_to_memory(self, new_SARS):
+        """Append a new SARSd to memory and remove the oldest memory."""
         self.transitions.append(new_SARS)
 
 
