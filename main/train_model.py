@@ -21,6 +21,7 @@ def main():
     env = gym.make('LunarLander-v2')
     memory = Memory(10000)
     batch_size = 64
+    episodes = 5000
     learning_rate = 0.0005
     policy_object = EpsilonGreedyPolicy()
     gamma = 0.9
@@ -35,7 +36,7 @@ def main():
     episode_reward_total = 0
     timestart = datetime.now()
 
-    for i_episode in range(5):
+    for i_episode in range(episodes):
         observation = env.reset()
         state_reward, done = 0, 0
         episode_reward = []
