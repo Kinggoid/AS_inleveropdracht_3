@@ -4,7 +4,6 @@ from classes.policy import EpsilonGreedyPolicy
 from classes.neural_network import *
 from classes.approximator import Approximator
 from classes.memory import Memory, SARSd
-from datetime import datetime
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -24,14 +23,13 @@ def main():
     # Create environment
     env = gym.make('LunarLander-v2')
 
-
     memory = Memory(10000)
     episodes = 5000
     batch_size = 32
-    learning_rate = 0.005
-    gamma = 0.8
-    tau = 0.001
-    copy_episodes = 4
+    learning_rate = 0.001
+    gamma = 0.9
+    tau = 0.01
+    copy_episodes = 5
 
     save_episodes = 100
 

@@ -4,15 +4,22 @@
 
 De agent vertoont verschillende soorten gedrag;
 
-- Agent "landt" te vroeg en stijgt dan weer op,
-- Agent voert zowat helemaal geen acties uit, waardoor deze tegen
-de grond knalt
-- Agent doet een 180 met fatale gevolgen
+- Agent "land" te vroeg en stijgt dan weer op,
+- De agent houdt zichzelf horizontaal in de lucht maar landt niet mooi,
+- Agent steigt op naar de hemel om nooit meer gezien te worden,
+- En nog veel meer gedrag.
 
 Heel soms toont de agent positief gedrag; dan landt hij met
 enige snelheid op de grond, maar vaak niet in het gevraagde gebied.
 
-Om de agent te verbeteren
+If you would want to improve our agent, we have the following suggestions:
+- There are certain variables defined in main() from train_model.py. We believe that there are certain combinations of
+those variables which can significantly improve the agents learning ability. We have just not found the right
+combinations yet. 
+- We are now training our agent by looking at his actions and judging how good these are. Then he can learn from our
+judgements. We judge these actions by looking at the state the agent will enter when performed said action. Then we
+look at how good this next state is. What you can do to maybe improve performance, is look even further at the state 
+after the next state. This could be interesting to look at.
 
 ## Running
 
