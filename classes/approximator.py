@@ -41,11 +41,13 @@ class Approximator:
         self.network.fit(x, y)
 
     def set_weights_and_bias(self, weights: np.ndarray, bias: np.ndarray, layer: int):
+        """Sets the weights and biases of a specified layer of the network to the given input parameters."""
         if weights.shape == self.network.layers[layer].get_weights()[0].shape and bias.shape == self.network.layers[layer].get_weights()[1].shape:
             wandb = [weights, bias]
             self.network.layers[layer].set_weights(wandb)
 
     def set_weights(self, weights: np.ndarray, layer: int):
+        """Set the weights of a specified layer of the network to the given weights."""
         if weights.shape == self.network.layers[layer].get_weights()[0].shape:
             bias = self.get_bias(layer)
             wandb = [weights, bias]
@@ -62,6 +64,7 @@ class Approximator:
         return unfiltered[index]
 
     def get_bias(self, layer):
+        """Get the bias of the specified layer of the network."""
         if layer == 0:
             raise Exception("Input layer does not have biases.")
         elif layer < 0 or layer > 3:
