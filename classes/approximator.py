@@ -18,9 +18,9 @@ class Approximator:
         """Gives the output of the Approximator neural network based
         on a single or a set of inputs."""
         if isinstance(inputs[0], list) or isinstance(inputs[0], np.ndarray):
-            arrayinputs = np.array(inputs).reshape(len(inputs),8)  # https://stackoverflow.com/questions/70362733/input-to-the-neural-network-using-an-array
+            arrayinputs = np.array(inputs).reshape(len(inputs), 8)  # https://stackoverflow.com/questions/70362733/input-to-the-neural-network-using-an-array
         else:
-            arrayinputs = np.array(inputs).reshape(1,8)
+            arrayinputs = np.array(inputs).reshape(1, 8)
         out = self.network.predict(arrayinputs)
         if out.shape[0] == 1:  # Double-nested list zonder enig nut, moet weg.
             return out[0]

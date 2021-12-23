@@ -1,15 +1,16 @@
 import gym
 
-from classes.policy import EpsilonGreedyPolicy, SARSd
+from classes.policy import EpsilonGreedyPolicy
 from classes.neural_network import *
 from classes.approximator import Approximator
-from classes.memory import Memory
+from classes.memory import Memory, SARSd
 from datetime import datetime
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 
 def visualize_learning(rewards):
+    """Used to make a graph to visualize the learning process of the agent."""
     ax = sns.lineplot(rewards[0], rewards[1])
 
     ax.set(xlabel='Timesteps', ylabel='Rewards')
@@ -19,30 +20,32 @@ def visualize_learning(rewards):
 
 
 def main():
+    """Main loop to train an agent for the LunarLander-v2 environment."""
+    # Create environment
     env = gym.make('LunarLander-v2')
+
+
     memory = Memory(10000)
-    batch_size = 64
     episodes = 5000
-    learning_rate = 0.0005
+    batch_size = 32
+    learning_rate = 0.005
+    gamma = 0.8
+    tau = 0.001
+    copy_episodes = 4
+
+    save_episodes = 100
+
     policy_object = EpsilonGreedyPolicy()
-    gamma = 0.9
     policy_network = Approximator(learning_rate)
     target_network = Approximator(learning_rate)
-    copy_episodes = 10
-    save_episodes = 100
-    tau = 0.001
-    rewards = [[], []]
 
-    # LOGGING
-    episode_reward_total = 0
-    timestart = datetime.now()
+    rewards = [[], []]
 
     for i_episode in range(episodes):
         observation = env.reset()
         state_reward, done = 0, 0
         episode_reward = []
         for t in range(1000):
-
             last_observation = observation
             last_done = done
 
@@ -56,15 +59,10 @@ def main():
 
             if done:
                 episode_reward.append(reward)
-                average_reward = sum(episode_reward) / len(episode_reward)
-                print("Episode: {}".format(i_episode))
-                print("Episode finished after {} timesteps".format(t+1))
-                print("Episode reward is " + str(sum(episode_reward)))
-                print("Average episode reward is " + str(average_reward))
                 break
 
         rewards[0].append(i_episode)
-        rewards[1].append(sum(episode_reward))
+        rewards[1].append(sum(episode_reward)/len(episode_reward))
 
         train(target_network, policy_network, memory, batch_size, gamma)  # Update stap deel 1: Train
         if i_episode % copy_episodes == 0 and i_episode > 0:  # Update stap deel 2: Targetnetwork kopieert (deels) policy

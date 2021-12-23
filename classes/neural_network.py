@@ -40,21 +40,20 @@ def train_serial(targetmodel, policymodel, memory, batchsize, gamma):
 def train(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
     size = len(memory.transitions)
-    if size < batchsize:
+    if size < batchsize:  # If batch size exceeds the memory size
         batchsize = size
 
-    batch = memory.sample(batchsize)
+    batch = memory.sample(batchsize)  # Sample of SARSd's in the memory
 
     batch_states = np.array([a.state for a in batch])
-    # batch_actions = np.array([b.action for b in batch])
-    # batch_rewards = np.array([c.reward for c in batch])
     batch_next_states = np.array([d.next_state for d in batch])
-    # batch_done = np.array([e.done for e in batch])
 
+    # Policies and targets of the next state
     next_state_policies = policymodel.get_output(batch_next_states)
     next_state_targets = targetmodel.get_output(batch_next_states)
+
+    # The policies of the next state
     state_policies = policymodel.get_output(batch_states)
-    test = state_policies.copy()
 
     for i in range(len(batch)):
         sarsd = batch[i]
