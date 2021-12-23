@@ -13,7 +13,7 @@ class EpsilonGreedyPolicy:
         pass
 
     def select_action(self, state, actions, model, episode):
-        """Selects an action based on current state (input for policy model),
+        """Selects an action based on the current state (input for policy model),
         list of actions (env.action_space as input), model (Approximator class for policy)
         and the current episode (for epsilon_decay)"""
         if prob(self.epsilon_decay(episode)):  # Epsilon probability chance to pick a random action
@@ -23,10 +23,10 @@ class EpsilonGreedyPolicy:
         return policyaction
 
     def epsilon_decay(self, x):
-        """Epsilon decay method which returns an epsilon for a episode.
-        Designed to have relatively high epsilon at start to stimulate exploring
-        and finding optimal state action sqeuences, later on reduces epsilon to
-        converge to one of the optimal solutions."""
+        """Epsilon decay method  returns an epsilon for a episode.
+        Designed to have relatively a high epsilon at the start to stimulate exploring
+        and finding optimal state action sqeuences. We later on reduce the epsilon to
+        converge to one of the more optimal solutions."""
         if x <= 100:
             return 0.6
         elif 100 < x <= 200:

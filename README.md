@@ -15,7 +15,11 @@ Sometimes - very rarely - it manages to land without a fuzz
 almost immediately, and sometimes - in these cases - land within
 the given zone as well.
 
-If you would want to improve our agent, we have the following suggestions:
+We would like our agent to perform better, but we are enthusiastic to see that he is actually learning! He can at least
+find out that it is bad to touch the ground and good to stay horizontal. It's just a shame that it's hard for him to
+combine all these good efforts. 
+
+If anyone would want to improve our agent, we have the following suggestions:
 - There are certain variables defined in main() from train_model.py. We believe that there are certain combinations of
 those variables which can significantly improve the agents learning ability. We have just not found the right
 combinations yet. 
