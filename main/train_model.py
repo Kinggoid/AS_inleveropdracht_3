@@ -25,7 +25,7 @@ def main():
 
     memory = Memory(10000)
     episodes = 5000
-    batch_size = 32
+    batch_size = 10
     learning_rate = 0.001
     gamma = 0.9
     tau = 0.01
