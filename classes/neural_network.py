@@ -6,7 +6,6 @@ from functions.helper import prob
 
 def train(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
-
     batch = memory.sample(batchsize)
     for i in range(len(batch)):
         state = batch[i]
