@@ -12,7 +12,7 @@ env = gym.make('LunarLander-v2')
 policy_object = EpsilonGreedyPolicy()
 policy_model = Approximator(0.0005)
 
-policy_model.load_network("../savedmodels/policy_network/v1")
+policy_model.load_network("../savedmodels/policy_network/v1.h5")
 
 
 i_episode = 1100
