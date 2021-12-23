@@ -17,6 +17,7 @@ policy_model.load_network("../savedmodels/policy_network/v1")
 
 i_episode = 1100
 
+
 while True:  # Termineer programma om loop te breken
     observation = env.reset()
     for t in range(500):
@@ -26,5 +27,3 @@ while True:  # Termineer programma om loop te breken
         if done:
             print("Episode finished after {} timesteps".format(t + 1))
             break
-
-    env.close()

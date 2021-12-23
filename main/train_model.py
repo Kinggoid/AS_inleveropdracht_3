@@ -62,19 +62,20 @@ def main():
                 average_reward = sum(episode_reward) / len(episode_reward)
                 print("Episode: {}".format(i_episode))
                 print("Episode finished after {} timesteps".format(t+1))
+                print("Episode reward is " + str(sum(episode_reward)))
                 print("Average episode reward is " + str(average_reward))
                 break
 
         rewards[0].append(i_episode)
-        rewards[1].append(average_reward)
+        rewards[1].append(episode_reward)
 
-        train(target_network, policy_network, memory, batch_size, gamma)
-        if i_episode % copy_episodes == 0 and i_episode > 0:
+        train(target_network, policy_network, memory, batch_size, gamma)  # Update stap deel 1: Train
+        if i_episode % copy_episodes == 0 and i_episode > 0:  # Update stap deel 2: Targetnetwork kopieert (deels) policy
             copy_model(target_network, policy_network, tau)
 
         if i_episode % save_episodes == 0 and i_episode > 0:
-            target_network.save_network("../savedmodels/target_network/v1")
-            policy_network.save_network("../savedmodels/policy_network/v1")
+            target_network.save_network("../savedmodels/target_network/v1/")
+            policy_network.save_network("../savedmodels/policy_network/v1/")
 
     visualize_learning(rewards)
 

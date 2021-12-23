@@ -3,6 +3,8 @@ import numpy as np
 import tensorflow as tensor
 from functions.helper import prob
 
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 def train_serial(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
@@ -27,7 +29,7 @@ def train_serial(targetmodel, policymodel, memory, batchsize, gamma):
         tensortarget = policymodel.get_output(state.state)  # Tensorflow: Vervang de index beste actie met de target van de qvalues van target nn(?)
         tensortarget[state.action] = target
         # Voer backpropagation uit
-        # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], target = [30,50,0.5,10]
+        # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output policy model = [30,50,20,10], target = [30,50,0.5,10]
         x.append(state.state)
         y.append(tensortarget)
     x = np.array(x)
@@ -52,18 +54,19 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
     next_state_policies = policymodel.get_output(batch_next_states)
     next_state_targets = targetmodel.get_output(batch_next_states)
     state_policies = policymodel.get_output(batch_states)
+    test = state_policies.copy()
 
     for i in range(len(batch)):
-        state = batch[i]
         if batch_done[i]:
-            target = state.reward
+            target = batch_rewards[i]  # Q-values horen 0 te zijn, dus alleen reward telt hier.
         else:
             next_state_best_action = np.argmax(next_state_policies[i])
             next_state_best_action_qvalue = next_state_targets[i][next_state_best_action]
-            target = batch_rewards[i] * gamma * next_state_best_action_qvalue
+            target = batch_rewards[i] * gamma * next_state_best_action_qvalue  # Qp(S,A) = R + y* argmax a' Qt(S', a')
 
         state_policies[i][batch_actions[i]] = target
 
+    print()
     policymodel.train_network(batch_states, state_policies)
 
 
@@ -75,8 +78,8 @@ def copy_model(targetmodel, policymodel, tau):
         target_weights = targetmodel.get_weights(layer)
         policy_bias = policymodel.get_bias(layer)
         target_bias = targetmodel.get_bias(layer)
-        for y, x in np.ndindex(policy_weights.shape):
-            target_weights[y][x] = tau * policy_weights[y][x] + (1 - tau) * target_weights[y][x]
+        for x, y in np.ndindex(policy_weights.shape):
+            target_weights[x][y] = tau * policy_weights[x][y] + (1 - tau) * target_weights[x][y]
         for x in np.ndindex(policy_bias.shape):
             target_bias[x] = tau * policy_bias[x] + (1 - tau) * target_bias[x]
         targetmodel.set_weights_and_bias(target_weights, target_bias, layer)
