@@ -67,8 +67,8 @@ def main():
             copy_model(target_network, policy_network, tau)
 
         if i_episode % save_episodes == 0 and i_episode > 0:
-            target_network.save_network("../savedmodels/target_network/v1.h5")
-            policy_network.save_network("../savedmodels/policy_network/v1.h5")
+            target_network.save_network("../savedmodels/v1_target.h5")
+            policy_network.save_network("../savedmodels/v1_policy.h5")
 
     visualize_learning(rewards)
 
