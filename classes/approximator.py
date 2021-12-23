@@ -10,6 +10,7 @@ class Approximator:
         hidden1 = tf.keras.layers.Dense(32)(inputlayer)
         hidden2 = tf.keras.layers.Dense(32)(hidden1)
         outputlayer = tf.keras.layers.Dense(4)(hidden2)
+        self.layers = 4
         self.network = tf.keras.models.Model(inputs=inputlayer, outputs=outputlayer)
         self.network.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss="mse")
 
@@ -20,7 +21,11 @@ class Approximator:
             arrayinputs = np.array(inputs).reshape(len(inputs),8)  # https://stackoverflow.com/questions/70362733/input-to-the-neural-network-using-an-array
         else:
             arrayinputs = np.array(inputs).reshape(1,8)
-        return self.network.predict(arrayinputs)
+        out = self.network.predict(arrayinputs)
+        if out.shape[0] == 1:  # Double-nested list zonder enig nut, moet weg.
+            return out[0]
+        else:
+            return out
 
     def save_network(self, filepath):
         """Saves the model's assets in a given folder. Make sure the given folder is empty!"""

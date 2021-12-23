@@ -6,17 +6,18 @@ from functions.helper import prob
 
 def train(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
+    x = []
+    y = []
     batch = memory.sample(batchsize)
     for i in range(len(batch)):
         state = batch[i]
-        next_state = state.next_state
         if state.done:
             target = state.reward
         else:
-            next_state_policies = policymodel.get_output(next_state)
+            next_state_policies = policymodel.get_output(state.next_state)
             bestaction = np.argmax(next_state_policies)
 
-            next_state_targets = targetmodel.get_output(next_state)
+            next_state_targets = targetmodel.get_output(state.next_state)
             bestactionqvalue = next_state_targets[bestaction]
             target = state.reward + gamma * bestactionqvalue
 
@@ -24,14 +25,15 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
         tensortarget[state.action] = target
         # Voer backpropagation uit
         # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], target = [30,50,0.5,10]
-        policymodel.train_network(next_state, tensortarget)
-    return policymodel
+        x.append(state.next_state)
+        y.append(tensortarget)
+    policymodel.train_network(state.next_state, tensortarget)
 
 
 def copy_model(targetmodel, policymodel, tau):
     """We will partly copy and past the weights of the policymodel to the targetmodel."""
 
-    for layer in range(len(targetmodel.layers)):
+    for layer in range(1, targetmodel.layers):
         policy_weights = policymodel.get_weights(layer)
         target_weights = targetmodel.get_weights(layer)
         policy_bias = policymodel.get_bias(layer)

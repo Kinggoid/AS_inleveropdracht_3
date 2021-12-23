@@ -40,4 +40,3 @@ for i_episode in range(5000):
     copy_model(target_network, policy_network, tau)
 
 env.close()
-env.close()
