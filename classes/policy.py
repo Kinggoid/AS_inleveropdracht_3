@@ -12,17 +12,21 @@ class EpsilonGreedyPolicy:
     def __init__(self):
         pass
 
-    # def select_action(self, state, actions, model, episode):
     def select_action(self, state, actions, model, episode):
-        # if prob(epsilon):
-        if prob(self.epsilon_decay(episode)):
+        """Selects an action based on current state (input for policy model),
+        list of actions (env.action_space as input), model (Approximator class for policy)
+        and the current episode (for epsilon_decay)"""
+        if prob(self.epsilon_decay(episode)):  # Epsilon probability chance to pick a random action
             policyaction = actions.sample()
         else:
             policyaction = np.argmax(model.get_output(state))
         return policyaction
 
     def epsilon_decay(self, x):
-        # e *= disc**iters
+        """Epsilon decay method which returns an epsilon for a episode.
+        Designed to have relatively high epsilon at start to stimulate exploring
+        and finding optimal state action sqeuences, later on reduces epsilon to
+        converge to one of the optimal solutions."""
         if x <= 100:
             return 0.6
         elif 100 < x <= 200:

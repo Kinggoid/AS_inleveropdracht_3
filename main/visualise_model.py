@@ -12,13 +12,13 @@ env = gym.make('LunarLander-v2')
 policy_object = EpsilonGreedyPolicy()
 policy_model = Approximator(0.0005)
 
-policy_model.load_network("../savedmodels/policy_network/v1.h5")
+policy_model.load_network("../savedmodels/v1_policy.h5")
 
 
 i_episode = 1100
 
 
-while True:  # Termineer programma om loop te breken
+while True:  # You can only terminate the program by
     observation = env.reset()
     rewards = []
     for t in range(500):
