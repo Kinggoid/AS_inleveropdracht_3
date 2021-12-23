@@ -11,6 +11,11 @@ env = gym.make('LunarLander-v2')
 memory = Memory(1000)
 sample_size = 64
 learning_rate = 0.01
+gamma = 0.9
+policy_network = Approximator()
+target_network = Approximator()
+tau = 0.3
+
 
 for i_episode in range(5000):
     observation = env.reset()
@@ -27,12 +32,12 @@ for i_episode in range(5000):
         sarsd = SARSd(last_observation, action, reward, observation, last_done)
         Memory.append_to_memory(memory, sarsd)
 
-
-
-
-
         if done:
             print("Episode finished after {} timesteps".format(t+1))
             break
+
+    train(target_network, policy_network, memory, sample_size, gamma)
+    copy_model(target_network, policy_network, tau)
+
 env.close()
 env.close()
