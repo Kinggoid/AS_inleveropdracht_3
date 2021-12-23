@@ -1,9 +1,9 @@
 import gym
 
-from classes.policy import EpsilonGreedyPolicy, SARSd
+from classes.policy import EpsilonGreedyPolicy
 from classes.neural_network import *
 from classes.approximator import Approximator
-from classes.memory import Memory
+from classes.memory import Memory, SARSd
 from datetime import datetime
 import seaborn as sns
 import matplotlib.pyplot as plt

@@ -3,8 +3,6 @@ import random
 
 from functions.helper import prob
 
-from dataclasses import dataclass
-
 
 class EpsilonGreedyPolicy:
     """Initialises a greedy policy, which always takes the action
@@ -47,14 +45,3 @@ class EpsilonGreedyPolicy:
             return 0.12
         elif 1000 < x:
             return 0.1
-
-
-@dataclass
-class SARSd:
-    """Transition class with SARSd object."""
-    def __init__(self, state, action, reward, next_state, done):
-        self.state = state
-        self.action = action
-        self.reward = reward
-        self.next_state = next_state
-        self.done = done
