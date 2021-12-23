@@ -27,7 +27,7 @@ for i_episode in range(5000):
         last_observation = observation
         last_done = done
 
-        action = policy_object.select_action(last_observation, env.action_space, policy_network, t)
+        action = policy_object.select_action(last_observation, env.action_space, policy_network, i_episode)
         observation, reward, done, info = env.step(action)
         episode_reward += reward
 
