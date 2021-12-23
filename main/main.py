@@ -27,10 +27,6 @@ for i_episode in range(5000):
         sarsd = SARSd(last_observation, action, reward, observation, last_done)
         Memory.append_to_memory(memory, sarsd)
 
-
-
-
-
         if done:
             print("Episode finished after {} timesteps".format(t+1))
             break
