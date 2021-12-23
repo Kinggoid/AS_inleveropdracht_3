@@ -27,7 +27,9 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
         # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], target = [30,50,0.5,10]
         x.append(state.next_state)
         y.append(tensortarget)
-    policymodel.train_network(state.next_state, tensortarget)
+    x = np.array(x)
+    y = np.array(y)
+    policymodel.train_network(x, y)
 
 
 def copy_model(targetmodel, policymodel, tau):
@@ -40,7 +42,7 @@ def copy_model(targetmodel, policymodel, tau):
         target_bias = targetmodel.get_bias(layer)
         for y, x in np.ndindex(policy_weights.shape):
             target_weights[y][x] = tau * policy_weights[y][x] + (1 - tau) * target_weights[y][x]
-        for y, x in np.ndindex(policy_bias.shape):
-            target_bias[y][x] = tau * policy_bias[y][x] + (1 - tau) * target_bias[y][x]
+        for x in np.ndindex(policy_bias.shape):
+            target_bias[x] = tau * policy_bias[x] + (1 - tau) * target_bias[x]
         targetmodel.set_weights_and_bias(target_weights, target_bias, layer)
     # return targetmodel  # Return is niet nodig, model wordt in-place geupdated.

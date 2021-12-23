@@ -21,7 +21,6 @@ for i_episode in range(5000):
     observation = env.reset()
     state_reward, done = 0, 0
     for t in range(1000):
-        env.render()
 
         last_observation = observation
         last_done = done
@@ -34,9 +33,12 @@ for i_episode in range(5000):
 
         if done:
             print("Episode finished after {} timesteps".format(t+1))
+            print("Final reward: {}".format(reward))
             break
 
     train(target_network, policy_network, memory, sample_size, gamma)
     copy_model(target_network, policy_network, tau)
+
+target_network.save_network("")
 
 env.close()
