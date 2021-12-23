@@ -33,6 +33,7 @@ for i_episode in range(5000):
         Memory.append_to_memory(memory, sarsd)
 
         if done:
+            print("Episode: {}".format(i_episode))
             print("Episode finished after {} timesteps".format(t+1))
             print("Final reward: {}".format(reward))
             break

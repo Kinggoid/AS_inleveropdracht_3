@@ -8,6 +8,9 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
     x = []
     y = []
+    size = len(memory.transitions)
+    if size < batchsize:
+        batchsize = size
     batch = memory.sample(batchsize)
     for i in range(len(batch)):
         state = batch[i]

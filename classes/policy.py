@@ -41,5 +41,3 @@ class SARSd:
         self.reward = reward
         self.next_state = next_state
         self.done = done
-        # self.sars = (state, action, reward, next_state, done)
-
