@@ -8,19 +8,20 @@ from classes.approximator import Approximator
 from classes.memory import Memory
 
 env = gym.make('LunarLander-v2')
-memory = Memory(1000)
+memory = Memory(10000)
 sample_size = 64
-learning_rate = 0.01
+learning_rate = 0.0005
 policy_object = EpsilonGreedyPolicy()
 gamma = 0.9
 policy_network = Approximator()
 target_network = Approximator()
-copy_steps = 10
-tau = 0.3
+copy_steps = 4
+tau = 0.001
 
 for i_episode in range(5000):
     observation = env.reset()
     state_reward, done = 0, 0
+    episode_reward = 0
     for t in range(1000):
 
         last_observation = observation
@@ -28,6 +29,7 @@ for i_episode in range(5000):
 
         action = policy_object.select_action(last_observation, env.action_space, policy_network, t)
         observation, reward, done, info = env.step(action)
+        episode_reward += reward
 
         sarsd = SARSd(last_observation, action, reward, observation, last_done)
         Memory.append_to_memory(memory, sarsd)
@@ -35,7 +37,7 @@ for i_episode in range(5000):
         if done:
             print("Episode: {}".format(i_episode))
             print("Episode finished after {} timesteps".format(t+1))
-            print("Final reward: {}".format(reward))
+            print("Total episode reward: {}".format(episode_reward))
             break
 
     train(target_network, policy_network, memory, sample_size, gamma)

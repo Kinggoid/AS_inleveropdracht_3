@@ -23,13 +23,13 @@ class EpsilonGreedyPolicy:
     def epsilon_decay(self, x):
         # e *= disc**iters
         if x <= 10:
-            return 0.6
-        elif 10 < x <= 50:
-            return 0.5
-        elif 50 < x <= 100:
-            return 0.4
-        elif x > 100:
             return 0.3
+        elif 10 < x <= 50:
+            return 0.2
+        elif 50 < x <= 100:
+            return 0.1
+        elif x > 100:
+            return 0.05
 
 
 @dataclass
