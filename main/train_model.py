@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 def visualize_learning(rewards):
     ax = sns.lineplot(rewards[0], rewards[1])
     ax.set(xlabel='Timesteps', ylabel='Rewards')
-    plt.title('My first graph')
+    plt.title('Average reward per timestep')
 
     plt.show()
 
