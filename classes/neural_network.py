@@ -34,35 +34,38 @@ def train_serial(targetmodel, policymodel, memory, batchsize, gamma):
     y = np.array(y)
     policymodel.train_network(x, y)
 
+
 def train(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
-    x = []
-    y = []
     size = len(memory.transitions)
     if size < batchsize:
         batchsize = size
+
     batch = memory.sample(batchsize)
+
     batch_states = np.array([a.state for a in batch])
     batch_actions = np.array([b.action for b in batch])
     batch_rewards = np.array([c.reward for c in batch])
     batch_next_states = np.array([d.next_state for d in batch])
-    batch_dones = np.array([e.done for e in batch])
+    batch_done = np.array([e.done for e in batch])
 
-    qvalues_policy = policymodel.get_output(batch_next_states)
-    qvalues_target = targetmodel.get_output(batch_next_states)
-    qvalues_tensor_policy = policymodel.get_output(batch_states)
+    next_state_policies = policymodel.get_output(batch_next_states)
+    next_state_targets = targetmodel.get_output(batch_next_states)
+    state_policies = policymodel.get_output(batch_states)
 
     for i in range(len(batch)):
-        if batch_dones[i]:
-            target = batch_rewards[i]
+        state = batch[i]
+        if batch_done:
+            target = state.reward
         else:
-            bestaction = np.argmax(qvalues_policy[i])
-            bestactionqvalue = qvalues_target[i][bestaction]
-            target = batch_rewards[i] * gamma * bestactionqvalue
+            next_state_best_action = np.argmax(next_state_policies[i])
+            next_state_best_action_qvalue = next_state_targets[i][next_state_best_action]
+            target = batch_rewards[i] * gamma * next_state_best_action_qvalue
 
-        qvalues_tensor_policy[i][batch_actions[i]] = target
+        state_policies[i][batch_actions[i]] = target
 
-    policymodel.train_network(batch_states, qvalues_tensor_policy)
+    policymodel.train_network(batch_states, state_policies)
+
 
 def copy_model(targetmodel, policymodel, tau):
     """We will partly copy and past the weights of the policymodel to the targetmodel."""
