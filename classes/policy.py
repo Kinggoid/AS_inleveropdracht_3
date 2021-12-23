@@ -1,5 +1,6 @@
 import numpy as np
 import random
+
 from functions.helper import prob
 
 from dataclasses import dataclass

@@ -4,7 +4,7 @@ import tensorflow as tensor
 from functions.helper import prob
 
 
-def train(targetmodel, policymodel, memory, batchsize, gamma):
+def train_serial(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
     x = []
     y = []
@@ -34,6 +34,35 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
     y = np.array(y)
     policymodel.train_network(x, y)
 
+def train(targetmodel, policymodel, memory, batchsize, gamma):
+    """Train the approximator neural networks."""
+    x = []
+    y = []
+    size = len(memory.transitions)
+    if size < batchsize:
+        batchsize = size
+    batch = memory.sample(batchsize)
+    batch_states = np.array([a.state for a in batch])
+    batch_actions = np.array([b.action for b in batch])
+    batch_rewards = np.array([c.reward for c in batch])
+    batch_next_states = np.array([d.next_state for d in batch])
+    batch_dones = np.array([e.done for e in batch])
+
+    qvalues_policy = policymodel.get_output(batch_next_states)
+    qvalues_target = targetmodel.get_output(batch_next_states)
+    qvalues_tensor_policy = policymodel.get_output(batch_states)
+
+    for i in range(len(batch)):
+        if batch_dones[i]:
+            target = batch_rewards[i]
+        else:
+            bestaction = np.argmax(qvalues_policy[i])
+            bestactionqvalue = qvalues_target[i][bestaction]
+            target = batch_rewards[i] * gamma * bestactionqvalue
+
+        qvalues_tensor_policy[i][batch_actions[i]] = target
+
+    policymodel.train_network(batch_states, qvalues_tensor_policy)
 
 def copy_model(targetmodel, policymodel, tau):
     """We will partly copy and past the weights of the policymodel to the targetmodel."""
