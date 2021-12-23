@@ -36,19 +36,9 @@ def copy_model(targetmodel, policymodel, tau):
         target_weights = targetmodel.get_weights(layer)
         policy_bias = policymodel.get_bias(layer)
         target_bias = targetmodel.get_bias(layer)
-
-        layer_weights = []
-        for neuron in range(len(targetmodel.layers[layer].weights)):
-            weights = []
-            for weight in range(len(policy_weights[neuron])):
-                if prob(tau):
-                    weights.append(target_weights[neuron][weight])
-                else:
-                    weights.append(policy_weights[neuron][weight])
-            layer_weights.append(weights)
-
-        if prob(tau):
-            target_bias = policy_bias
-
-        targetmodel.set_weights_and_bias(layer_weights, target_bias, layer)
-    return targetmodel
+        for y, x in np.ndindex(policy_weights.shape):
+            target_weights[y][x] = tau * policy_weights[y][x] + (1 - tau) * target_weights[y][x]
+        for y, x in np.ndindex(policy_bias.shape):
+            target_bias[y][x] = tau * policy_bias[y][x] + (1 - tau) * target_bias[y][x]
+        targetmodel.set_weights_and_bias(target_weights, target_bias, layer)
+    # return targetmodel  # Return is niet nodig, model wordt in-place geupdated.
