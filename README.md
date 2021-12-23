@@ -1,5 +1,19 @@
 # AS_inleveropdracht_3
 
+## Agent analyse
+
+De agent vertoont verschillende soorten gedrag;
+
+- Agent "landt" te vroeg en stijgt dan weer op,
+- Agent voert zowat helemaal geen acties uit, waardoor deze tegen
+de grond knalt
+- Agent doet een 180 met fatale gevolgen
+
+Heel soms toont de agent positief gedrag; dan landt hij met
+enige snelheid op de grond, maar vaak niet in het gevraagde gebied.
+
+Om de agent te verbeteren
+
 ## Running
 
 To train a model, run `main/train_model.py` 
