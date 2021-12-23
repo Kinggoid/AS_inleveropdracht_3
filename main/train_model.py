@@ -42,9 +42,6 @@ def main():
         observation = env.reset()
         state_reward, done = 0, 0
         episode_reward = []
-        timeend = datetime.now()
-        # print("Iter took {}".format(timeend - timestart))
-        timestart = datetime.now()
         for t in range(1000):
 
             last_observation = observation
@@ -59,7 +56,6 @@ def main():
             Memory.append_to_memory(memory, sarsd)
 
             if done:
-                end = datetime.now()
                 episode_reward.append(reward)
                 average_reward = sum(episode_reward) / len(episode_reward)
                 # print("Episode: {}".format(i_episode))
