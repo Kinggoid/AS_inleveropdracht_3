@@ -66,7 +66,6 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
 
         state_policies[i][batch_actions[i]] = target
 
-    print()
     policymodel.train_network(batch_states, state_policies)
 
 

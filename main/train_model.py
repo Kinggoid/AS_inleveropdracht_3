@@ -10,7 +10,9 @@ import matplotlib.pyplot as plt
 
 
 def visualize_learning(rewards):
+    print(rewards[1])
     ax = sns.lineplot(rewards[0], rewards[1])
+
     ax.set(xlabel='Timesteps', ylabel='Rewards')
     plt.title('Average reward per timestep')
 
@@ -21,7 +23,7 @@ def main():
     env = gym.make('LunarLander-v2')
     memory = Memory(10000)
     batch_size = 64
-    episodes = 5000
+    episodes = 100
     learning_rate = 0.0005
     policy_object = EpsilonGreedyPolicy()
     gamma = 0.9
@@ -41,7 +43,7 @@ def main():
         state_reward, done = 0, 0
         episode_reward = []
         timeend = datetime.now()
-        print("Iter took {}".format(timeend - timestart))
+        # print("Iter took {}".format(timeend - timestart))
         timestart = datetime.now()
         for t in range(1000):
 
@@ -60,14 +62,14 @@ def main():
                 end = datetime.now()
                 episode_reward.append(reward)
                 average_reward = sum(episode_reward) / len(episode_reward)
-                print("Episode: {}".format(i_episode))
-                print("Episode finished after {} timesteps".format(t+1))
-                print("Episode reward is " + str(sum(episode_reward)))
-                print("Average episode reward is " + str(average_reward))
+                # print("Episode: {}".format(i_episode))
+                # print("Episode finished after {} timesteps".format(t+1))
+                # print("Episode reward is " + str(sum(episode_reward)))
+                # print("Average episode reward is " + str(average_reward))
                 break
 
         rewards[0].append(i_episode)
-        rewards[1].append(episode_reward)
+        rewards[1].append(sum(episode_reward))
 
         train(target_network, policy_network, memory, batch_size, gamma)  # Update stap deel 1: Train
         if i_episode % copy_episodes == 0 and i_episode > 0:  # Update stap deel 2: Targetnetwork kopieert (deels) policy
