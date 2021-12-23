@@ -1,3 +1,6 @@
+"""Trains a model and saves it at the same time, for evaluation in visualise_model.py.
+Also draws a graph with x = episode and y = average reward"""
+
 import gym
 
 from classes.policy import EpsilonGreedyPolicy
