@@ -36,8 +36,6 @@ def train_serial(targetmodel, policymodel, memory, batchsize, gamma):
 
 def train(targetmodel, policymodel, memory, batchsize, gamma):
     """Train the approximator neural networks."""
-    x = []
-    y = []
     size = len(memory.transitions)
     if size < batchsize:
         batchsize = size

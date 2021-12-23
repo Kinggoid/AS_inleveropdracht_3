@@ -4,7 +4,7 @@ import numpy as np
 
 class Approximator:
     """Base class which defines the network"""
-    def __init__(self):
+    def __init__(self, learningrate):
         # Base network
         inputlayer = tf.keras.layers.Input(shape=(8,))
         hidden1 = tf.keras.layers.Dense(32)(inputlayer)
@@ -12,7 +12,7 @@ class Approximator:
         outputlayer = tf.keras.layers.Dense(4)(hidden2)
         self.layers = 4
         self.network = tf.keras.models.Model(inputs=inputlayer, outputs=outputlayer)
-        self.network.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), loss="mse")
+        self.network.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learningrate), loss="mse")
 
     def get_output(self, inputs):
         """Gives the output of the Approximator neural network based
