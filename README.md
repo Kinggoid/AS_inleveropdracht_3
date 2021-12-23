@@ -2,15 +2,18 @@
 
 ## Agent analyse
 
-De agent vertoont verschillende soorten gedrag;
+The agent shows different types of unwanted behaviour
 
-- Agent "land" te vroeg en stijgt dan weer op,
-- De agent houdt zichzelf horizontaal in de lucht maar landt niet mooi,
-- Agent steigt op naar de hemel om nooit meer gezien te worden,
-- En nog veel meer gedrag.
+- Agent starts landing too soon, resulting in it taking off again (sometimes accompanied by
+crashing into the ground)
+- Agent levitates horizontally but doesn't land
+- Agent flies away
+- Agent performs a 180 with fatal consequences
+- Potentially many more types of unwanted behaviour
 
-Heel soms toont de agent positief gedrag; dan landt hij met
-enige snelheid op de grond, maar vaak niet in het gevraagde gebied.
+Sometimes - very rarely - it manages to land without a fuzz
+almost immediately, and sometimes - in these cases - land within
+the given zone as well.
 
 If you would want to improve our agent, we have the following suggestions:
 - There are certain variables defined in main() from train_model.py. We believe that there are certain combinations of

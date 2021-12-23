@@ -3,6 +3,9 @@ import gym
 from classes.policy import EpsilonGreedyPolicy
 from classes.neural_network import *
 from classes.approximator import Approximator
+from classes.memory import Memory, SARSd
+
+from datetime import datetime
 
 env = gym.make('LunarLander-v2')
 
