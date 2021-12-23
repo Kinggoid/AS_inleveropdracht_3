@@ -25,7 +25,7 @@ def train(targetmodel, policymodel, memory, batchsize, gamma):
         tensortarget[state.action] = target
         # Voer backpropagation uit
         # Tensorflow: Voorbeeld: Target = 0.5, A* = 2: output = [30,50,20,10], target = [30,50,0.5,10]
-        x.append(state.next_state)
+        x.append(state.state)
         y.append(tensortarget)
     x = np.array(x)
     y = np.array(y)

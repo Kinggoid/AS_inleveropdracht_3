@@ -15,19 +15,18 @@ class EpsilonGreedyPolicy:
 
     def select_action(self, state, actions, model, timestep):
         if prob(self.epsilon_decay(timestep)):
-            possibleactions = [x for x in range(len(actions))]
-            policyaction = random.choice(possibleactions)
+            policyaction = actions.sample()
         else:
             policyaction = np.argmax(model.get_output(state))
         return policyaction
 
     def epsilon_decay(self, x):
         # e *= disc**iters
-        if x < 10:
+        if x <= 10:
             return 0.6
-        elif 10 < x < 50:
+        elif 10 < x <= 50:
             return 0.5
-        elif 50 < x < 100:
+        elif 50 < x <= 100:
             return 0.4
         elif x > 100:
             return 0.3

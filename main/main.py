@@ -11,6 +11,7 @@ env = gym.make('LunarLander-v2')
 memory = Memory(1000)
 sample_size = 64
 learning_rate = 0.01
+policy_object = EpsilonGreedyPolicy()
 gamma = 0.9
 policy_network = Approximator()
 target_network = Approximator()
@@ -25,7 +26,7 @@ for i_episode in range(5000):
         last_observation = observation
         last_done = done
 
-        action = env.action_space.sample()
+        action = policy_object.select_action(last_observation, env.action_space, policy_network, t)
         observation, reward, done, info = env.step(action)
 
         sarsd = SARSd(last_observation, action, reward, observation, last_done)
