@@ -42,6 +42,7 @@ for i_episode in range(5000):
     if i_episode % copy_steps == 0 and i_episode > 0:
         copy_model(target_network, policy_network, tau)
 
-target_network.save_network("../savedmodels/v1")
+target_network.save_network("../savedmodels/target_network/v1")
+policy_network.save_network("../savedmodels/policy_network/v1")
 
 env.close()
