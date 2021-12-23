@@ -14,8 +14,8 @@ learning_rate = 0.01
 gamma = 0.9
 policy_network = Approximator()
 target_network = Approximator()
+copy_steps = 10
 tau = 0.3
-
 
 for i_episode in range(5000):
     observation = env.reset()
@@ -37,8 +37,9 @@ for i_episode in range(5000):
             break
 
     train(target_network, policy_network, memory, sample_size, gamma)
-    copy_model(target_network, policy_network, tau)
+    if i_episode % copy_steps == 0 and i_episode > 0:
+        copy_model(target_network, policy_network, tau)
 
-target_network.save_network("")
+target_network.save_network("../savedmodels/v1")
 
 env.close()

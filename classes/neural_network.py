@@ -45,4 +45,3 @@ def copy_model(targetmodel, policymodel, tau):
         for x in np.ndindex(policy_bias.shape):
             target_bias[x] = tau * policy_bias[x] + (1 - tau) * target_bias[x]
         targetmodel.set_weights_and_bias(target_weights, target_bias, layer)
-    # return targetmodel  # Return is niet nodig, model wordt in-place geupdated.
